@@ -1,7 +1,7 @@
 import { ENV_LOCATION, LOCK_LOCATION, setupSchema } from "../../lib/shared";
-import { stringify } from "envfile";
+import { parse, stringify } from "envfile";
 import fs from "fs";
-import * as compose from "docker-compose";
+import child_process from "child_process";
 
 const isLocked = () => {
   const fs = require("fs");
@@ -9,7 +9,6 @@ const isLocked = () => {
 };
 
 export default async function handler(req: any, res: any) {
-  debugger;
   if (isLocked()) {
     return;
   }
@@ -21,19 +20,29 @@ export default async function handler(req: any, res: any) {
       EMAIL: req.body.email,
     };
 
+    let originalEnv = {};
+
+    if (fs.existsSync(ENV_LOCATION)) {
+      originalEnv = parse(fs.readFileSync(ENV_LOCATION).toString());
+    }
+
     fs.writeFileSync(ENV_LOCATION, stringify(env));
     fs.writeFileSync(LOCK_LOCATION, "");
 
-    compose.exec("certbot", [
-      "certbot",
-      "certonly",
-      "--agree-tos",
-      "--cert-name",
-      "dnsrelay",
-      "--email",
-      env.EMAIL,
-    ]);
-    compose.restartOne("certbot");
+    // @ts-ignore
+    if (originalEnv?.DOMAIN !== env.EMAIL) {
+      try {
+        fs.rmdirSync("/etc/letsencrypt/live", { recursive: true });
+        fs.rmdirSync("/etc/letsencrypt/renewal", { recursive: true });
+        fs.rmdirSync("/etc/letsencrypt/archive", { recursive: true });
+
+        child_process.execSync(
+          `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
+        );
+
+        fs.writeFileSync("/etc/letsencrypt/.reload", "");
+      } catch (e) {}
+    }
   }
   res.redirect("/");
 }
