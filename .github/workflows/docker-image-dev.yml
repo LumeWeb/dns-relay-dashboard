@@ -43,5 +43,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: develop
+          tags: ${{ github.repository }}:develop
           labels: ${{ steps.meta.outputs.labels }}
