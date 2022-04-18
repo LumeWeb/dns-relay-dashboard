@@ -33,6 +33,7 @@ export default async function handler(req: any, res: any) {
       "--email",
       env.EMAIL,
     ]);
+    compose.restartOne("certbot");
   }
   res.redirect("/");
 }
