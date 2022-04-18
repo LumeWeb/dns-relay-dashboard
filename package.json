@@ -1,5 +1,5 @@
 {
-  "name": "dns-relay-dashboard",
+  "name": "@lumeweb/dns-relay-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
