@@ -46,7 +46,9 @@ export default async function handler(req: any, res: any) {
             `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
           )
         );
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+      }
     }
 
     fs.existsSync(RELOAD_LOCATION) && fs.unlinkSync(RELOAD_LOCATION);
