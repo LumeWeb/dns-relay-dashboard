@@ -43,9 +43,11 @@ export default async function handler(req: any, res: any) {
         });
 
         console.log(
-          child_process.execSync(
-            `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
-          )
+          child_process
+            .execSync(
+              `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
+            )
+            .toString()
         );
       } catch (e) {
         console.log(e);
