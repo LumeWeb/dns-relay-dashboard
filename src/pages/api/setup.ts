@@ -37,9 +37,9 @@ export default async function handler(req: any, res: any) {
     // @ts-ignore
     if (originalEnv?.DOMAIN !== env.DOMAIN) {
       try {
-        fs.rmdirSync("/etc/letsencrypt/live", { recursive: true });
-        fs.rmdirSync("/etc/letsencrypt/renewal", { recursive: true });
-        fs.rmdirSync("/etc/letsencrypt/archive", { recursive: true });
+        fs.rmSync("/etc/letsencrypt/live", { recursive: true });
+        fs.rmSync("/etc/letsencrypt/renewal", { recursive: true });
+        fs.rmSync("/etc/letsencrypt/archive", { recursive: true });
 
         console.log(
           child_process.execSync(
