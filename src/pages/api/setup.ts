@@ -1,4 +1,9 @@
-import { ENV_LOCATION, LOCK_LOCATION, setupSchema } from "../../lib/shared";
+import {
+  ENV_LOCATION,
+  LOCK_LOCATION,
+  RELOAD_LOCATION,
+  setupSchema,
+} from "../../lib/shared";
 import { parse, stringify } from "envfile";
 import fs from "fs";
 import child_process from "child_process";
@@ -40,7 +45,8 @@ export default async function handler(req: any, res: any) {
           `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
         );
 
-        fs.writeFileSync("/etc/letsencrypt/.reload", "");
+        fs.existsSync(RELOAD_LOCATION) && fs.unlinkSync(RELOAD_LOCATION);
+        fs.writeFileSync(RELOAD_LOCATION, "");
       } catch (e) {}
     }
   }

@@ -16,3 +16,4 @@ export const setupSchema = () => {
 export const LOCK_LOCATION = "/data/.lock";
 export const ENV_LOCATION = "/data/.env";
 export const AUTH_LOCATION = "/data/gundns/auth.json";
+export const RELOAD_LOCATION = "/etc/letsencrypt/.reload";
