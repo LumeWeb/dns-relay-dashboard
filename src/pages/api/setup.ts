@@ -41,8 +41,10 @@ export default async function handler(req: any, res: any) {
         fs.rmdirSync("/etc/letsencrypt/renewal", { recursive: true });
         fs.rmdirSync("/etc/letsencrypt/archive", { recursive: true });
 
-        child_process.execSync(
-          `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
+        console.log(
+          child_process.execSync(
+            `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
+          )
         );
       } catch (e) {}
     }
