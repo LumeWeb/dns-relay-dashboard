@@ -42,12 +42,8 @@ export default async function handler(req: any, res: any) {
           fs.existsSync(location) && fs.rmSync(location, { recursive: true });
         });
 
-        console.log(
-          child_process
-            .execSync(
-              `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
-            )
-            .toString()
+        child_process.execSync(
+          `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
         );
       } catch (e) {
         console.log(e);
