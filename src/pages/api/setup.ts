@@ -30,7 +30,7 @@ export default async function handler(req: any, res: any) {
     fs.writeFileSync(LOCK_LOCATION, "");
 
     // @ts-ignore
-    if (originalEnv?.DOMAIN !== env.EMAIL) {
+    if (originalEnv?.DOMAIN !== env.DOMAIN) {
       try {
         fs.rmdirSync("/etc/letsencrypt/live", { recursive: true });
         fs.rmdirSync("/etc/letsencrypt/renewal", { recursive: true });
