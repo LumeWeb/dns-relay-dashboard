@@ -44,11 +44,11 @@ export default async function handler(req: any, res: any) {
         child_process.execSync(
           `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
         );
-
-        fs.existsSync(RELOAD_LOCATION) && fs.unlinkSync(RELOAD_LOCATION);
-        fs.writeFileSync(RELOAD_LOCATION, "");
       } catch (e) {}
     }
+
+    fs.existsSync(RELOAD_LOCATION) && fs.unlinkSync(RELOAD_LOCATION);
+    fs.writeFileSync(RELOAD_LOCATION, "");
   }
   res.redirect("/");
 }
