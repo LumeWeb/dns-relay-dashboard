@@ -30,14 +30,18 @@ export default async function handler(req: any, res: any) {
     fs.writeFileSync(LOCK_LOCATION, "");
 
     // @ts-ignore
+    console.log(originalEnv?.DOMAIN, env.DOMAIN);
+    // @ts-ignore
     if (originalEnv?.DOMAIN !== env.DOMAIN) {
       try {
         fs.rmdirSync("/etc/letsencrypt/live", { recursive: true });
         fs.rmdirSync("/etc/letsencrypt/renewal", { recursive: true });
         fs.rmdirSync("/etc/letsencrypt/archive", { recursive: true });
 
-        child_process.execSync(
-          `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
+        console.log(
+          child_process.execSync(
+            `certbot certonly --webroot -w /var/www/certbot --agree-tos --cert-name dnsrelay -m "${env.EMAIL}" -d "${env.DOMAIN}" -n`
+          )
         );
 
         fs.writeFileSync("/etc/letsencrypt/.reload", "");
